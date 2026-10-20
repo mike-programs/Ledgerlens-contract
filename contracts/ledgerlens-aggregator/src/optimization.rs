@@ -47,6 +47,12 @@ impl ExtendedScore {
         ExtendedScore { basis_points: basis_points.min(SCORE_BP_MAX) }
     }
 
+    /// Strict variant of [`Self::from_basis_points`]: rejects values above
+    /// [`SCORE_BP_MAX`] instead of saturating them.
+    pub fn try_from_basis_points(basis_points: u32) -> Option<Self> {
+        (basis_points <= SCORE_BP_MAX).then_some(ExtendedScore { basis_points })
+    }
+
     /// Construct from a legacy 0-100 score using the implicit scale factor.
     /// This is the migration path for existing entries: no storage rewrite is
     /// needed, the legacy value is simply widened on read.
@@ -365,6 +371,12 @@ impl ShardReadMemo {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn try_from_basis_points_rejects_out_of_range() {
+        assert_eq!(ExtendedScore::try_from_basis_points(SCORE_BP_MAX).unwrap().basis_points, SCORE_BP_MAX);
+        assert!(ExtendedScore::try_from_basis_points(SCORE_BP_MAX + 1).is_none());
+    }
+
     use super::*;
 
     #[test]

@@ -79,6 +79,8 @@ mod test_gate_fee_tiers;
 
 #[cfg(test)]
 mod test_invariants;
+#[cfg(test)]
+mod test_governed_write_paths;
 
 #[cfg(test)]
 mod test_migration_rollback;

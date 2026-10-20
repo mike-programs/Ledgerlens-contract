@@ -636,3 +636,8 @@ the PR and show no regression.
 
 Mutation coverage is preserved on the moved code by pointing the mutation
 testing configuration at `crates/ledgerlens-math/src/`.
+
+## Clamping and rejection
+
+Which arithmetic clamps deliberately and which conditions are rejected is
+audited in [security/clamping-audit.md](security/clamping-audit.md).
